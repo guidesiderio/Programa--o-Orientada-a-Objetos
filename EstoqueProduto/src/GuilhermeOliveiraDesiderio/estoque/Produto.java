@@ -2,31 +2,27 @@ package GuilhermeOliveiraDesiderio.estoque;
 
 /** 
 @author  Guilherme Oliveira Desidério
-@since   12.07.2022
+@since   02.08.2022
 */
 
-/*
- * Classe Produto representa itens que podem estar a venda em um supermercado.
- * Produtos possuem atributos e métodos
- */
-
 public class Produto {
+	
 	private int codigo;
 	private String descricao;
-	private double precoCompra;
-	private double precoVenda;
+	private double precoDeCompra;
+	private double precoDeVenda;
+	private double lucro;
 	private int quantidade;
 	private int estoqueMinimo;
-	private int cnpj;
-	private String fornecedor;
-	
-	public Produto() {
-		this.setCodigo(0);
-		this.setDescricao(null);
-		this.setPrecoCompra(0);
-		this.setPrecoVenda(0);
-		this.setQuantidade(0);
-		this.setEstoqueMinimo(0);
+	private Fornecedor nome;
+
+	public Produto(int codigo, String descricao, int estoqueMinimo, double lucro, Fornecedor nome) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.lucro = lucro;
+		this.estoqueMinimo = estoqueMinimo;
+		this.nome = nome;
 	}
 
 	public int getCodigo() {
@@ -45,20 +41,20 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public double getPrecoCompra() {
-		return precoCompra;
+	public double getPrecoDeCompra() {
+		return precoDeCompra;
 	}
 
-	public void setPrecoCompra(double d) {
-		this.precoCompra = d;
+	public void setPrecoDeCompra(double d) {
+		this.precoDeCompra = d;
 	}
 
-	public double getPrecoVenda() {
-		return precoVenda;
+	public double getPrecoDeVenda() {
+		return precoDeVenda;
 	}
 
-	public void setPrecoVenda(double precoVenda) {
-		this.precoVenda = precoVenda;
+	public void setPrecoDeVenda(double precoDeVenda) {
+		this.precoDeVenda = precoDeVenda;
 	}
 
 	public int getQuantidade() {
@@ -76,36 +72,38 @@ public class Produto {
 	public void setEstoqueMinimo(int estoqueMinimo) {
 		this.estoqueMinimo = estoqueMinimo;
 	}
-
-	public int getCnpj() {
-		return cnpj;
+	
+	public double getLucro() {
+		return lucro;
 	}
 
-	public void setCnpj(int cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getFornecedor() {
-		return fornecedor;
-	}
-
-	public void setFornecedor(String fornecedor) {
-		this.fornecedor = fornecedor;
+	public void setLucro(double lucro) {
+		this.lucro = lucro;
 	}
 	
+	public Fornecedor getNome() {
+		return nome;
+	}
+
+	public void setNome(Fornecedor nome) {
+		this.nome = nome;
+	}
+
 	public void compra(int quant, double val) {
-		val = this.getPrecoCompra() * quant;
+		this.setPrecoDeCompra((this.getQuantidade() * this.getPrecoDeCompra() + quant * val) / (this.getQuantidade() + quant));
 		this.setQuantidade(this.getQuantidade() + quant);
-		this.setPrecoCompra(val / quant);
+			
+		this.setPrecoDeVenda(this.getPrecoDeCompra() * (this.getLucro() + 1));
+		
 	}
 	
 	public double venda(int quant) {
 		if(this.getQuantidade() >= quant) {
 			this.setQuantidade(this.getQuantidade() - quant);
-			return this.getPrecoVenda() * quant;
+			return this.getPrecoDeVenda() * quant;
 		}
 		else {
-			return 0;
+			return -1;
 		}
 	}
 }	

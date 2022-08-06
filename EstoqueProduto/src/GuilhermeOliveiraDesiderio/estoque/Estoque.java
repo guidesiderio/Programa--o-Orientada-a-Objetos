@@ -2,62 +2,66 @@ package GuilhermeOliveiraDesiderio.estoque;
 
 /** 
 @author  Guilherme Oliveira Desidério
-@since   12.07.2022
+@since   02.08.2022
 */
 
-/*
- * Classe Estoque invoca os métodos da classe Produto
- */
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Estoque {
 
-	public static void main(String[] args) {
-		
-		Produto sabonete = new Produto();
-		
-		System.out.println("------------------------------------------------------");
-		System.out.println("CODIGO: " + sabonete.getCodigo());
-		System.out.println("DESCRICAO: " + sabonete.getDescricao());
-		System.out.println("PRECO DE COMPRA: R$ " + sabonete.getPrecoCompra());
-		System.out.println("PRECO DE VENDA: R$ " + sabonete.getPrecoVenda());
-		System.out.println("QUANTIDADE: " + sabonete.getQuantidade());
-		System.out.println("ESTOQUE MINIMO: " + sabonete.getEstoqueMinimo());
-		
-		sabonete.setCodigo(43512);
-		sabonete.setDescricao("Sabonete");
-		sabonete.setPrecoCompra(2);
-		sabonete.setPrecoVenda(5);
-		sabonete.setQuantidade(10);
-		sabonete.setEstoqueMinimo(2);
-		
-		System.out.println("------------------------------------------------------");
-		System.out.println("CODIGO: " + sabonete.getCodigo());
-		System.out.println("DESCRICAO: " + sabonete.getDescricao());
-		System.out.println("PRECO DE COMPRA: R$ " + sabonete.getPrecoCompra());
-		System.out.println("PRECO DE VENDA: R$ " + sabonete.getPrecoVenda());
-		System.out.println("QUANTIDADE: " + sabonete.getQuantidade());
-		System.out.println("ESTOQUE MINIMO: " + sabonete.getEstoqueMinimo());
-		
-		sabonete.compra(10, 20);
-		
-		System.out.println("------------------------------------------------------");
-		System.out.println("CODIGO: " + sabonete.getCodigo());
-		System.out.println("DESCRICAO: " + sabonete.getDescricao());
-		System.out.println("PRECO DE COMPRA: R$ " + sabonete.getPrecoCompra());
-		System.out.println("PRECO DE VENDA: R$ " + sabonete.getPrecoVenda());
-		System.out.println("QUANTIDADE: " + sabonete.getQuantidade());
-		System.out.println("ESTOQUE MINIMO: " + sabonete.getEstoqueMinimo());
-		
-		sabonete.venda(5);
-		
-		System.out.println("------------------------------------------------------");
-		System.out.println("CODIGO: " + sabonete.getCodigo());
-		System.out.println("DESCRICAO: " + sabonete.getDescricao());
-		System.out.println("PRECO DE COMPRA: R$ " + sabonete.getPrecoCompra());
-		System.out.println("PRECO DE VENDA: R$ " + sabonete.getPrecoVenda());
-		System.out.println("QUANTIDADE: " + sabonete.getQuantidade());
-		System.out.println("ESTOQUE MINIMO: " + sabonete.getEstoqueMinimo());
-		
+	LinkedList<Produto> linkedlist = new LinkedList<>();
+	
+	public void incluir(Produto produto) {
+		Produto novo = pesquisar(produto.getCodigo());
+		if (novo != null) {
+			System.out.println("Produto já cadastrada.");
+		} else {
+		  linkedlist.addLast(produto);
+		}
 	}
+	
+	public Produto pesquisar(int num){
+		for (Produto produto : linkedlist) {
+			if (produto.getCodigo() == num) {
+				return produto;
+			}		
+		}
+		return null;
+	}
+	  
+	  public void comprar(int cod, int quant, double preco) {
+		  if(quant < 0 && preco < 0) {
+			  System.out.println("Erro!");
+		  }
+		  else {
+			  for(Produto produto: linkedlist) {
+				  if(produto.getCodigo() == cod) {
+					  produto.compra(quant, preco);
+					  break;
+				  }
+			  }
+		  }
+	  }
 
-}
+	  public double vender(int cod, int quant) {
+			 for(Produto produto: linkedlist) {
+				 if(produto.getCodigo() == cod) {
+					 return produto.venda(quant);
+				 }
+			 }
+			return -1;
+	  }
+
+	  ArrayList<Produto> estoqueAbaixoDoMinimo = new ArrayList<>();
+	  
+	  public ArrayList<Produto> estoqueAbaixoDoMinimo() {
+		  
+		  for(Produto produto: linkedlist) {
+			  if(produto.getQuantidade() < produto.getEstoqueMinimo()) {
+				  estoqueAbaixoDoMinimo.add(produto);
+			  }
+		  }
+		  return  estoqueAbaixoDoMinimo;
+	  }
+	}
