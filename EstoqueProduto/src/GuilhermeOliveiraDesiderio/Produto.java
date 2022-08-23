@@ -1,12 +1,7 @@
-package GuilhermeOliveiraDesiderio.estoque;
-
-/** 
-@author  Guilherme Oliveira Desidério
-@since   02.08.2022
-*/
+package GuilhermeOliveiraDesiderio;
 
 public class Produto {
-	
+
 	private int codigo;
 	private String descricao;
 	private double precoDeCompra;
@@ -72,7 +67,7 @@ public class Produto {
 	public void setEstoqueMinimo(int estoqueMinimo) {
 		this.estoqueMinimo = estoqueMinimo;
 	}
-	
+
 	public double getLucro() {
 		return lucro;
 	}
@@ -80,7 +75,7 @@ public class Produto {
 	public void setLucro(double lucro) {
 		this.lucro = lucro;
 	}
-	
+
 	public Fornecedor getNome() {
 		return nome;
 	}
@@ -90,20 +85,20 @@ public class Produto {
 	}
 
 	public void compra(int quant, double val) {
-		this.setPrecoDeCompra((this.getQuantidade() * this.getPrecoDeCompra() + quant * val) / (this.getQuantidade() + quant));
+		this.setPrecoDeCompra(
+				(this.getQuantidade() * this.getPrecoDeCompra() + quant * val) / (this.getQuantidade() + quant));
 		this.setQuantidade(this.getQuantidade() + quant);
-			
+
 		this.setPrecoDeVenda(this.getPrecoDeCompra() * (this.getLucro() + 1));
-		
+
 	}
-	
+
 	public double venda(int quant) {
-		if(this.getQuantidade() >= quant) {
+		if (this.getQuantidade() < quant || quant < 0) {
+			return -1;
+		} else {
 			this.setQuantidade(this.getQuantidade() - quant);
 			return this.getPrecoDeVenda() * quant;
 		}
-		else {
-			return -1;
-		}
 	}
-}	
+}

@@ -1,14 +1,13 @@
-package GuilhermeOliveiraDesiderio.estoque;
+package GuilhermeOliveiraDesiderio;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-
 import java.util.Date;
 
 import org.junit.Test;
 
-public class TesteControleEstoqueResumido {
+public class TesteControleEstoqueCompleto {
 	
 	@Test
 	public void testarCadastroProduto(){
@@ -107,7 +106,74 @@ public class TesteControleEstoqueResumido {
 	  assertEquals(10, outro.getQuantidade(), 0.001);
 	  assertEquals(-1, val, 0.001);
 	}
-		
+	
+	@Test
+	public void testarVendaNegativa(){
+	  Fornecedor f1 = new Fornecedor(1, "Forn1");
+	  Produto p1 = new Produto(1, "coca-cola", 5, 0.5, f1);
+	  
+	  Estoque est = new Estoque();
+	  
+	  est.incluir(p1);
+	  est.comprar(1, 10, 2.0);
+	  double val = est.vender(1, -11);
+	  
+	  Produto outro = est.pesquisar(1);
+	  assertEquals(1, outro.getCodigo());
+	  assertEquals(10, outro.getQuantidade(), 0.001);
+	  assertEquals(-1, val, 0.001);
+	}
+	
+	@Test
+	public void testarCompraQuantidadeNegativa(){
+	  Fornecedor f1 = new Fornecedor(1, "Forn1");
+	  Produto p1 = new Produto(1, "coca-cola", 5, 0.5, f1);
+	  
+	  Estoque est = new Estoque();
+	  
+	  est.incluir(p1);
+	  est.comprar(1, -10, 2.0);
+	  
+	  Produto outro = est.pesquisar(1);
+	  assertEquals(1, outro.getCodigo());
+	  assertEquals(0, outro.getQuantidade(), 0.001);
+	}
+	
+	@Test
+	public void testarCompraPrecoNegativo(){
+	  Fornecedor f1 = new Fornecedor(1, "Forn1");
+	  Produto p1 = new Produto(1, "coca-cola", 5, 0.5, f1);
+	  
+	  Estoque est = new Estoque();
+	  
+	  est.incluir(p1);
+	  est.comprar(1, 10, -2.0);
+	  
+	  Produto outro = est.pesquisar(1);
+	  assertEquals(1, outro.getCodigo());
+	  assertEquals(0, outro.getQuantidade(), 0.001);
+	}
+	
+	@Test
+	public void testarAtualizacaoPrecoDeCompra(){
+	  Fornecedor f1 = new Fornecedor(1, "Forn1");
+	  Produto p1 = new Produto(1, "coca-cola", 5, 0.5, f1);
+	  
+	  Estoque est = new Estoque();
+	  
+	  est.incluir(p1);
+	  est.comprar(1, 10, 2);	  
+	  Produto outro = est.pesquisar(1);
+	  assertEquals(1, outro.getCodigo());
+	  assertEquals(10, outro.getQuantidade(), 0.001);
+	  assertEquals(2, outro.getPrecoDeCompra(), 0.001);
+	  assertEquals(3.0, outro.getPrecoDeVenda(), 0.001);
+	  est.comprar(1, 10, 4);	 
+	  assertEquals(4.5, outro.getPrecoDeVenda(), 0.001);
+	}
+
+	
+	
 	@Test
 	public void testarEstoqueMinimo(){
 	  Fornecedor f1 = new Fornecedor(1, "Forn1");

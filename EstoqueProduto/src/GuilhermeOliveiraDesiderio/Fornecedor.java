@@ -1,9 +1,4 @@
-package GuilhermeOliveiraDesiderio.estoque;
-
-/** 
-@author  Guilherme Oliveira Desidério
-@since   02.08.2022
-*/
+package GuilhermeOliveiraDesiderio;
 
 public class Fornecedor {
 

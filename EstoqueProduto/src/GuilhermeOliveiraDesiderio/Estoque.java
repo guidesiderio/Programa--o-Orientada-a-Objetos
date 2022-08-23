@@ -1,28 +1,22 @@
-package GuilhermeOliveiraDesiderio.estoque;
-
-/** 
-@author  Guilherme Oliveira Desidério
-@since   02.08.2022
-*/
+package GuilhermeOliveiraDesiderio;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Estoque {
 
-	LinkedList<Produto> linkedlist = new LinkedList<>();
+	ArrayList<Produto> produtos = new ArrayList<>();
 	
 	public void incluir(Produto produto) {
 		Produto novo = pesquisar(produto.getCodigo());
 		if (novo != null) {
-			System.out.println("Produto já cadastrada.");
+			System.out.println("Produto já cadastrado.");
 		} else {
-		  linkedlist.addLast(produto);
+		  produtos.add(produto);
 		}
 	}
 	
 	public Produto pesquisar(int num){
-		for (Produto produto : linkedlist) {
+		for (Produto produto : produtos) {
 			if (produto.getCodigo() == num) {
 				return produto;
 			}		
@@ -31,11 +25,11 @@ public class Estoque {
 	}
 	  
 	  public void comprar(int cod, int quant, double preco) {
-		  if(quant < 0 && preco < 0) {
-			  System.out.println("Erro!");
+		  if(quant < 0 || preco < 0) {
+			  System.out.println("Erro");
 		  }
 		  else {
-			  for(Produto produto: linkedlist) {
+			  for(Produto produto: produtos) {
 				  if(produto.getCodigo() == cod) {
 					  produto.compra(quant, preco);
 					  break;
@@ -43,9 +37,9 @@ public class Estoque {
 			  }
 		  }
 	  }
-
+	  
 	  public double vender(int cod, int quant) {
-			 for(Produto produto: linkedlist) {
+		  for(Produto produto: produtos) {
 				 if(produto.getCodigo() == cod) {
 					 return produto.venda(quant);
 				 }
@@ -56,8 +50,7 @@ public class Estoque {
 	  ArrayList<Produto> estoqueAbaixoDoMinimo = new ArrayList<>();
 	  
 	  public ArrayList<Produto> estoqueAbaixoDoMinimo() {
-		  
-		  for(Produto produto: linkedlist) {
+		  for(Produto produto: produtos) {
 			  if(produto.getQuantidade() < produto.getEstoqueMinimo()) {
 				  estoqueAbaixoDoMinimo.add(produto);
 			  }
